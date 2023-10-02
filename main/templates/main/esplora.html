@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block title %}Homepage{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mx-auto">
+  <div class="row m-2">
+  <form method="POST", class="form-group"> 
+  {% csrf_token %}
+  {{form|crispy}}
+  <button type="submit" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </form>
+</div>
+
+  <div class="row m-2">
+    {% for categoria in lista_categorie.categories %}
+    <div class="container col-md-3">
+      <section class="mx-auto my-5" style="max-width: 15rem;">
+      <div class="card mb-3">
+        <img class="card-img-top" src="{{categoria.strCategoryThumb}}" alt="">
+        <div class="card-body">
+          <h5 class="card-title">{{categoria.strCategory}}</h5>
+          <p class="card-text" style="font-size: 10px">{{categoria.strCategoryDescription}}</p>
+          <a class="btn btn-info" href="/esploracat/{{categoria.strCategory}}">Visit</a>
+        </div>
+      </div>
+      </section>
+      </div>
+    {% if forloop.counter|divisibleby:4 %}
+    </div>
+    <div class="row m-2">
+    {% endif %}
+
+    {% endfor %}
+
+{% endblock %}

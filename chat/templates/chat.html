@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mx-auto">
+
+    <section class="h-100 h-custom" style="background-color: #ff7b89;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                  <div class="row g-0">
+                    <div class="col-lg-8">
+                      <div class="p-5" id="chat-log">
+                        <a href="{% url 'new_group' %}" type="button" class="btn btn-sm btn-warning">Crea nuova stanza</a>
+
+                        <ul>
+                            {% for group in groups %}
+                            <div id="{{group.uuid}}">
+                            <li><a>{{group.uuid}}</a></li>
+                            {% if request.user in group.members.all %}
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                            <a href="{% url 'open_chat' uuid=group.uuid %}" type="button" class="btn btn-outline-info">Apri</a>
+                            <a href="{% url 'leave_group' uuid=group.uuid %}" type="button" class="btn btn-outline-info">Lascia</a>
+                            <a href="{% url 'remove_group' uuid=group.uuid %}" type="button" class="btn btn-outline-info">Elimina</a>
+                            </div>
+
+                            {% else %}
+                            <a href="{% url 'join_group' uuid=group.uuid %}" type="button" class="btn btn-outline-info">Entra</a>
+                            {% endif %}
+                            </div>
+                        {% endfor %}
+                        </ul>
+                        {% endif %}  
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>  
+
+</div>
+
+{% endblock %}

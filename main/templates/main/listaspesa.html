@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+{% block title %}Homepage{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container mx-auto">
+
+    <section class="h-100 h-custom" style="background-color: #ff7b89;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                  <div class="row g-0">
+                    <div class="col-lg-8">
+                      <div class="p-5">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                          <h1 class="fw-bold mb-0 text-black">Lista della spesa</h1>
+                        </div>
+                        <hr class="my-4">
+                        {% for ingrediente, quantita in spesa.items %}
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <p><strong>{{quantita}} - {{ingrediente}}</strong></p>
+                          </div>
+                        </div>
+                        <hr class="my-4">
+                        {% endfor %}      
+      
+                        <div class="d-flex justify-content-between mb-5">
+                          <h5 class="text-uppercase">Totale ingredienti: {{numero}}</h5>
+                        </div>
+      
+                        <a href="/gestioneric" type="button" class="btn btn-dark btn-block btn-lg"
+                          data-mdb-ripple-color="dark">Vai alla gestione ricettario</a>
+                        <a href="/puliscispesa" type="button" class="btn btn-dark btn-block btn-outline-danger btn-lg"
+                          data-mdb-ripple-color="dark">Pulisci la lista della spesa</a>
+      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>  
+
+</div>
+
+{% endblock %}

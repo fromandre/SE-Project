@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+{% block title %}Crea Ricettario{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mx-auto">
+    <form method="POST", class="form-group card p-3 shadow-lg" enctype="multipart/form-data">
+        {% csrf_token %}
+    <h2>Crea un ricettario.</h2><hr>
+    {{form|crispy}}
+    <button type="submit" class="btn btn-success">Crea ricettario!</button>
+    </form>
+   
+{% endblock %}

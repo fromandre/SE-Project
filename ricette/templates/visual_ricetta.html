@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% block title %}{{ricetta.ricetta_nome}}{% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mx-auto col-md-12">
+    <div class="card" style="width: 100%">
+        <img class="mx-auto" src="/media/{{ricetta.ricetta_immagine}}" alt="Recipe" style="width: 60%; height: 60%; border: 1px solid black">
+        <div class="card-body">
+          <h5 class="card-title">{{ricetta.ricetta_nome}}</h5>
+          <hr><h5>Ingredienti:</h5></p>
+          <ul class="list-group list-group-flush">
+            <div class="form group">
+            <form class="ingredienti-form" action="" method="POST" id="{{ricetta.id}}"></form>
+            {% csrf_token %}
+            {% for ingrediente in ingredienti %}
+            <div class="row">
+            <li class="list-group-item"><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" name="sceltabox">
+            <input type="text" class="form-control" value="{{ingrediente.quantità}}" readonly><input type="text" class="form-control" value="{{ingrediente.ingrediente}}" readonly></li>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-info btn-sm m-2" id="aggiungispesa" hidden><strong>Aggiungi a lista della spesa</strong></button> 
+          </form>
+        </div>
+          </ul>
+        <p class="card-text"><h5>Procedimento:</h5><br>{{ricetta.ricetta_descrizione}}
+        <hr>
+        <p class="card-text"><strong>Valutazione:</strong></p>
+        <form class="rate-form" action="" method="POST" id="{{ricetta.id}}">
+          {% csrf_token %}
+        <button type="submit" class="fa fa-star fa-2x my-btn" id="uno"></button>
+        <button type="submit" class="fa fa-star fa-2x my-btn" id="due"></button>
+        <button type="submit" class="fa fa-star fa-2x my-btn" id="tre"></button>
+        <button type="submit" class="fa fa-star fa-2x my-btn" id="quattro"></button>
+        <button type="submit"class="fa fa-star fa-2x my-btn" id="cinque"></button>
+        <hr>
+        <div id="conferma"></div>
+      </form>
+      <p class="card-text" id="voto" value="{{rating}}" class="d-none"></p>
+        </div>
+        
+      </div>
+
+</div>
+   
+{% endblock %}

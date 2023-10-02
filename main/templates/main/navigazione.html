@@ -1,0 +1,35 @@
+<ul class="nav m-4">
+    <li class="nav-item">
+        <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i class="fa-solid fa-bars"></i></button>
+    </li>
+        {% if user.is_authenticated %}
+            {% block content %} <h3 class="mx-auto">Bentornato, {{user.username}}</h3> {% endblock %}
+        {% else %}
+            <a href="/login" class="mx-auto"><button class="btn btn-light" type="button"><i class="fa-solid fa-right-to-bracket"></i>Login</button></a>
+        {% endif %}
+</ul>
+
+<div class="offcanvas offcanvas-start m-1" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title mx-auto" id="offcanvasTopLabel"><button class="btn btn-outline-danger" disabled>Navigazione</button</h5>
+      <button type="button" class="btn-close text-bg-white m-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="mx-auto" style="list-style-type: none">
+        {% if user.is_authenticated %}
+            <li><a href="/homepage"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-house"></i>Homepage</button></a></li>
+            <!-- <li><a href="/crearic"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-kitchen-set"></i>Crea ricettario</button></a></li> -->
+            <li><a href="/gestioneric"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-kitchen-set"></i>Gestione Ricettari</button></a></li>
+            <li><a href="/numerocampi"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-fire-burner"></i>Crea ricetta</button></a></li>
+            <li><a href="/listaspesa"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-cart-shopping"></i>Lista della spesa</button></a></li>
+            <li><a href="/chat"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-brands fa-rocketchat"></i>Chat</button></a></li>
+            <li><a href="/logout"><button class="btn btn-outline-danger m-1" type="button"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></a></li>
+            
+        {% else %}
+            <li><a href="/login" class="mx-auto"><button class="btn btn-light" type="button"><i class="fa-solid fa-right-to-bracket"></i>Login</button></a></li>
+        {% endif %}
+        
+        </ul>
+    </div>
+  </div>
+

@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block title %}Registra un nuovo account{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<button class="btn btn-outline-info" ><h1>Registrazione</h1></button>
+<hr>
+    <form method="POST", class="form-group">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-success">Salva</button>
+    </form>
+
+{% endblock %}

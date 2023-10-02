@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center"><button class="btn btn-danger btn-lg mx-auto"><i class="fa-solid fa-kitchen-set"></i><h6>Gestione Ricettari.<br>Da qui potrai gestire le tue ricette.</h6></button>
+    <a href="crearic" class="btn btn-outline-success mx-auto m-1">Crea nuovo ricettario</a>
+</div>
+<div class="container mx-auto">
+    <div class="row m-1">
+        <hr>
+        
+        {% for ricettario in user.ricettario.all %}
+            <div class="col-sm-4">
+                <div class="card" style="width: 15rem;">
+                    <img class="card-img-top" src="/media/{{ricettario.immagine}}" style="height: 240px">
+                    <div class="card-body">
+                    <p class="card-text"><h5>{{ricettario.name}}</h5></p>
+                    <hr>
+                    <a href="ricettario/{{ricettario.id}}" class="btn btn-info mx-auto m-1">Apri ricettario</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminaric" onclick="$('#delete').attr('href', 'eliminaric/{{ricettario.id}}')">Elimina ricettario</button>   
+                    <!-- <a href="eliminaric/{{ricettario.id}}" class="btn btn-danger mx-auto m-1">Elimina ricettario</a> -->
+                    </div>
+                </div>
+            </div>
+        {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row m-2">
+        {% endif %}
+        {% endfor %}
+        </div>
+
+
+        <!-- Modal-->
+        <div class="modal fade" id="eliminaric" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Elimina ricettario</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Sei sicuro di voler eliminare questo ricettario? <br> Tutte le ricette contenute all'interno verranno rimosse.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                  <a href="" id="delete" class="btn btn-danger">Elimina</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "main/base.html" %}
+{% block title %}Chat{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container mx-auto">
+
+    <section class="h-100 h-custom" style="background-color: #ff7b89;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                  <div class="row g-0">
+                    <div class="col-lg-12">
+                      <div class="p-5 mx-auto" id="chat-log">                                
+                        {% if messages %}
+                        {% for message in messages %}
+                        <input type="text" class="form-control" value="{{message.content}}" readonly>
+                        <h6>{{message.author}}</h6>
+                        {% endfor %}
+                        {% endif %}
+                      </div>
+                        <hr class="my-4">
+                        <div class="row mx-auto justify-content-center">
+                        <input id="chat-message-input" type="text" class="form-control m-2 mx-auto" size="60" placeholder="Scrivi..">
+                        <input id="chat-message-submit" type="button" class="btn btn-warning btn-sm m-2 mx-auto" value="Invia">
+                      </div>
+                        <script>
+                            function isOpen(ws) { return ws.readyState === ws.OPEN }
+                            base_url = 'ws://' + window.location.hostname + ':' + window.location.port + '/ws/open_chat/' + "{{ uuid }}" + '/';
+                            chatSocket = new WebSocket(base_url)
+                            chatSocket.onmessage = function(event){
+                                let parsed = JSON.parse(event.data);
+                                document.querySelector('#chat-log').innerHTML += '<input type="text" class="form-control m-1" value=" '+ parsed.message +'" readonly>';
+                            }
+                            
+                            document.querySelector('#chat-message-submit').onclick = function(e){
+                                const messageInputDom = document.querySelector('#chat-message-input');
+                                const message = messageInputDom.value;
+                                if (!isOpen(chatSocket)) return;
+                                chatSocket.send(JSON.stringify({
+                                    "message":message
+                                }));
+                                messageInputDom.value='';
+                            };
+                        </script> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>  
+
+</div>
+{% endif %}
+{% endblock %}
