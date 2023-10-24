@@ -14,19 +14,24 @@
   <section class="mx-auto" style="max-width: 30rem;">
     <div class="card bg-dark text-white">
       <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="/media/{{ricetta.ricetta_immagine}}" class="img-fluid"/>
+        <img src="/media/{{ricetta.immagine}}" class="img-fluid"/>
         <a href="#">
           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
         </a>
       </div>
       <div class="card-body">
-        <h5 class="card-title" style="font: font-weight-bold"><strong>{{ricetta.ricetta_nome}}</strong></h5>
-        <p class="card-text" style="font-size: 10px;">
-          {{ricetta.ricetta_descrizione}}
+        <h5 class="card-title" style="font: font-weight-bold"><strong>{{ricetta.nome}}</strong></h5>
+        <p class="card-text" style="font-size: 12px;">
+          <strong>Ingredients:</strong>
+          <textarea class="form-control" rows="5" readonly>{% for ingrediente in ricetta.ingredienti.all %}{{ingrediente.quantità}} - {{ingrediente.ingrediente}} &#13;&#10;{% endfor %}
+          </textarea>
+          <strong>Steps:</strong>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" readonly>{{ricetta.procedimento}}</textarea>
+          <small class="text-light">Servings: {{ricetta.persone}} - Time: {{ricetta.prontoin}} m - Health Score: {{ricetta.punteggiosalute}}</small>
         </p>
         <hr class="my-4"/>
         <div class="row">
-        <a href="/visual_ricetta/{{ricetta.id}}" class="btn btn-sm btn-outline-info mb-1"><strong>Apri ricetta</strong></a>
+        <a href="/visual_ricetta/{{ricetta.id}}" class="btn btn-sm btn-outline-info mb-1"><strong>Ingrandisci</strong></a>
         <a href="/elimina_ricetta/{{ricetta.id}}" class="btn btn-sm btn-danger mt-1"><strong>Elimina ricetta</strong></a>
       </div>
       </div>

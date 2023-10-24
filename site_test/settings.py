@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'daphne',
+    'reversion',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'bootstrap5',
-
 ]
 
 MIDDLEWARE = [

@@ -7,9 +7,11 @@
 
 <div class="container mx-auto col-md-12">
     <div class="card" style="width: 100%">
-        <img class="mx-auto" src="/media/{{ricetta.ricetta_immagine}}" alt="Recipe" style="width: 60%; height: 60%; border: 1px solid black">
+        <img class="mx-auto" src="/media/{{ricetta.immagine}}" alt="Recipe" style="width: 60%; height: 60%; border: 1px solid black">
         <div class="card-body">
           <h5 class="card-title">{{ricetta.ricetta_nome}}</h5>
+          <p class="card-text"><strong>Portata: {{ricetta.portata}} - Dosi per {{ricetta.persone}} persone</strong></p>
+          <p class="card-text"><small>Pronto in {{ricetta.prontoin}} minuti. <strong>Punteggio salute: {{ricetta.punteggiosalute}}</strong></small></p>
           <hr><h5>Ingredienti:</h5></p>
           <ul class="list-group list-group-flush">
             <div class="form group">
@@ -25,7 +27,7 @@
           </form>
         </div>
           </ul>
-        <p class="card-text"><h5>Procedimento:</h5><br>{{ricetta.ricetta_descrizione}}
+        <p class="card-text"><h5>Procedimento:</h5><br>{{ricetta.procedimento}}</p>
         <hr>
         <p class="card-text"><strong>Valutazione:</strong></p>
         <form class="rate-form" action="" method="POST" id="{{ricetta.id}}">
@@ -45,4 +47,5 @@
 
 </div>
    
+<script type="text/javascript" src="{% static 'main/main.js' %}"></script>
 {% endblock %}

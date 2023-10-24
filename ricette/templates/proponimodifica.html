@@ -1,0 +1,75 @@
+{% extends "main/base.html" %}
+{% block title %} Analizza Ricetta {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row m-3">
+    <div class="card bg-warning" style="max-height: 200px; overflow: scroll;">
+      <div class="card-header">
+        Versioni precedenti
+      </div>
+      {% if versioni|length < 1 %}
+      <p> Nessuna modifica passata.</p>
+      {% endif %}
+      <ul class="list-group list-group-flush"></ul>
+      {% for versione in versioni %}
+      <li class="list-group-item">
+        {{versione.revision.comment}} -  Utente: <strong>{{versione.revision.user}} | Data: {{versione.revision.date_created}}</strong> 
+        <a href="/vecchiaversione/{{versione.revision.id}}"><div class="btn btn-danger position-absolute end-0 align-middle">Visualizza</div></a>
+      </li>
+      <hr>
+      {% endfor %}
+    </ul>
+    </div>
+  </div>
+<div class="row">
+      <div class="col">
+        <div class="card border-success mb-3 mx-auto">
+            <img src="/media/{{ricetta.immagine}}" class="card-img rounded-bottom align-middle mx-auto m-1 border-0 opacity-90" style="border: 1px solid green; width: 550px; height: 350px;">
+          <div class="card-body">
+            <form method="POST", class="form-group"> 
+              {% csrf_token %}
+              {{formcheckingr|crispy}}
+              <button type="submit" name="action" value="eliminaingr" class="btn btn-danger">Elimina ingredienti selezionati</button>
+              <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#aggingr">Aggiungi Ingrediente</button>
+            </form> 
+            <br><hr>
+            <form method="POST", class="form-group"> 
+              {% csrf_token %}
+              {{formricetta|crispy}}
+              <button type="submit" name="action" value="salvamodifiche" class="btn btn-success">Salva modifiche</button>
+              </form> 
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Servings: {{ricetta.persone}} - Time: {{ricetta.prontoin}} m - Health Score: {{ricetta.punteggiosalute}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="aggingr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Salva Aggiungi Ingrediente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p>Inserisci dati del nuovo ingrediente<br><hr></p>
+              <form method="POST" class="form-group">
+              {% csrf_token %}
+              {{formingr|crispy}}
+              <br>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+              <button type="submit" name="action" value="aggingr" class="btn btn-success">Salva ingrediente!</button>
+              </form>
+            </div>
+          <div class="modal-footer">  
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock %}

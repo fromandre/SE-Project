@@ -1,1 +1,12 @@
-{}
+{
+  "main/test.py::test_main_models::test_model_item_return": true,
+  "main/test.py::test_main_views::test_main_views_apriric_else": true,
+  "main/test.py::test_main_views::test_main_views_apriric_post": true,
+  "main/test.py::test_main_views::test_main_views_esplora_aut_post": true,
+  "main/test.py::test_main_views::test_main_views_esplora_not_aut": true,
+  "main/test.py::test_main_views::test_main_views_esploracat": true,
+  "main/test.py::test_main_views::test_main_views_estraingr": true,
+  "main/test.py::test_autenticazione_views_post::test_registerview_else": true,
+  "main/test.py::test_main_views::test_main_views_cercaricette": true,
+  "main/test.py::test_main_views::test_main_views_esploraPOSTcerca": true
+}

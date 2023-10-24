@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+import reversion
 
 # Create your models here.
 # Modelli del Database
@@ -16,17 +16,29 @@ class ricettario(models.Model):
 class IngredienteRicetta(models.Model):
     ingrediente = models.CharField(max_length=100, blank=True, null=True)
     quantità = models.CharField(max_length=100, blank=True, null=True)
+    def __str__(self):
+        return str(self.quantità) + " " + str(self.ingrediente)
 
+@reversion.register
 class ricetta(models.Model):
-    ricettario = models.ForeignKey(ricettario, on_delete=models.CASCADE, related_name="ricetta", null=True)
-    ricetta_nome = models.CharField(max_length=100)
-    ricetta_descrizione = models.TextField()
-    ricetta_immagine = models.ImageField(upload_to="img")
-    ricetta_ingredienti = models.ManyToManyField(IngredienteRicetta)
+    ricettario = models.ManyToManyField(ricettario)
+    nome = models.CharField(max_length=100)
+    prontoin = models.CharField(max_length=100)
+    persone = models.IntegerField()
+    immagine = models.ImageField(upload_to="img")
+    ingredienti = models.ManyToManyField(IngredienteRicetta)
+    portata = models.CharField(max_length=50)
+    procedimento = models.CharField(max_length=2000)
+    punteggiosalute = models.IntegerField()
+    tipidieta = models.CharField(max_length=100)
+    class Versioning:
+        ultimamodifica = 'date'
+        clear = ['log']
     def __str__ (self):
-        return self.ricetta_nome
+        return self.nome
 
 class Recensione(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recensione", null=True)
     ricetta = models.ForeignKey(ricetta, on_delete=models.CASCADE, related_name="ricetta", null=True)
     punteggio = models.IntegerField(default=0,
         validators = [
@@ -35,13 +47,10 @@ class Recensione(models.Model):
         ]
     )
     def __str__(self):
-        return str(self.punteggio)
+        return str(self.ricetta)
     
 class Spesa(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="spesa", null=True) 
     ingredienti = models.ManyToManyField(IngredienteRicetta)
     
-class Item(models.Model): 
-    ricetta = models.ForeignKey(ricetta, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.ricetta.ricetta_nome
+

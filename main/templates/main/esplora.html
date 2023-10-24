@@ -1,35 +1,118 @@
 {% extends "main/base.html" %}
-{% block title %}Homepage{% endblock %}
+{% block title %}Sezione Esplora{% endblock %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 <div class="container mx-auto">
-  <div class="row m-2">
-  <form method="POST", class="form-group"> 
-  {% csrf_token %}
-  {{form|crispy}}
-  <button type="submit" class="btn btn-info"><i class="fa-solid fa-magnifying-glass"></i></button>
-  </form>
+    <div class="row m-2">
+    <form method="POST", class="form-group"> 
+    {% csrf_token %}
+    {{form|crispy}}
+    <button type="submit" name="action" value="Cerca" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
 </div>
-
-  <div class="row m-2">
-    {% for categoria in lista_categorie.categories %}
-    <div class="container col-md-3">
-      <section class="mx-auto my-5" style="max-width: 15rem;">
-      <div class="card mb-3">
-        <img class="card-img-top" src="{{categoria.strCategoryThumb}}" alt="">
-        <div class="card-body">
-          <h5 class="card-title">{{categoria.strCategory}}</h5>
-          <p class="card-text" style="font-size: 10px">{{categoria.strCategoryDescription}}</p>
-          <a class="btn btn-info" href="/esploracat/{{categoria.strCategory}}">Visit</a>
+  <hr>
+  {% if ricette|length < 1 %}
+  <button class="btn btn-outline-danger btn-lg mx-auto" disabled>Nessuna ricetta trovata.</button>
+  {% elif ricette|length > 0 %}
+ {% if counter > 0 %}
+ <div class="container d-flex mx-auto"><p class="mx-auto justify-content-center align-middle"><button class="btn btn-warning outline mx-auto" disabled><strong> Ricette suggerite dal sistema.</strong></button></p></div>
+  <div class="card mx-auto" style="max-height: 400px; max-width: 500px;">
+    <div class="card-body">
+      <div id="suggeriti" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="suggeriti" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 0"></button>
+        {% for numero in numerosugg %}
+          <button type="button" data-bs-target="suggeriti" data-bs-slide-to="{{numero}}" class="active" aria-current="true" aria-label="Slide {{numero}}"></button>
+        {% endfor %}
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'main/suggestion.jpeg' %}" class="d-block w-100" alt="..." style="height: 340px">
+          </div>
+          {% for ricetta in suggestions %}
+          <div class="carousel-item">
+            <div class="carousel-caption d-none d-md-block" style="top: 0; bottom: auto;">
+              <div class="btn btn-sm btn-outline-light"><i class="fa-solid fa-utensils"></i> {{ricetta.nome}}</div>
+            </div>
+            <img src="/media/{{ricetta.immagine}}" class="d-block w-40 mx-auto" style="border: 1px solid salmon; width: 100%; height: 340px;">
+          </div>
+          {% endfor %}
+          <button class="carousel-control-prev" type="button" data-bs-target="#suggeriti" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#suggeriti" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
-      </section>
-      </div>
-    {% if forloop.counter|divisibleby:4 %}
     </div>
-    <div class="row m-2">
-    {% endif %}
+  </div>
+<br>
+<hr>
+{% endif %}
+<div class="container d-flex mx-auto"><p class="mx-auto justify-content-center align-middle"><button class="btn btn-warning outline mx-auto" disabled><strong> Lista di tutte le ricette: </strong></button></p></div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+      <br>
+      {% for ricetta in ricette %}
+      <div class="col">
+        <div class="card h-100 border-success mb-3" style="max-width: 350px; max-height: 900px;">
+            <img src="/media/{{ricetta.immagine}}" class="card-img rounded-bottom align-middle mx-auto m-1 border-0 opacity-90" style="width: 320px; height: 250px;">
+          <div class="card-body">
+          <h5 class="card-title">{{ricetta.nome}}</h5>
+          <strong>Type: {{ricetta.portata}}</strong>
+          <br>
+          <p class="card-text" style="font-size: 15px;">
+            <strong>Ingredients:</strong>
+            <textarea class="form-control" rows="5" readonly>{% for ingrediente in ricetta.ingredienti.all %}{{ingrediente.quantità}} - {{ingrediente.ingrediente}} &#13;&#10;{% endfor %}
+            </textarea>
+            <strong>Steps:</strong>
+            <textarea class="form-control" rows="5" readonly>{{ricetta.procedimento}}</textarea>
+            <br>
+            <p>
+              <strong>Diets:</strong><br>
+            <small><strong>{{ricetta.tipidieta}}</strong></small>
+            </p>
+        </p>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#save" onclick="$('#id_ricetta').val('{{ricetta.id}}')">Salva ricetta</button>
+        <a href="proponimodifica/{{ricetta.id}}" ><button type="button" class="btn btn-warning">Proponi Modifica</button></a>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Servings: {{ricetta.persone}} - Time: {{ricetta.prontoin}} m - Health Score: {{ricetta.punteggiosalute}}</small>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-    {% endfor %}
+    <div class="modal fade" id="save" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Salva ricettario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>In quale dei tuoi ricettario vorresti salvare la ricetta?<br><hr></p>
+                <form method="POST" class="form-group">
+                {% csrf_token %}
+                {{formric|crispy}}
+                <br>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="submit" name="action" value="Salva" class="btn btn-danger">Salva Ricetta!</button>
+                </form>
+              </div>
+            <div class="modal-footer">  
+            </div>
+          </div>
+        </div>
+      </div>
 
+{% endif %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'main/esplora.js' %}"></script>
 {% endblock %}

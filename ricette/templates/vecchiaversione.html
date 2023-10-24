@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+{% block title %} Analizza Ricetta {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row m-3">
+    <div class="card bg-warning" style="max-height: 200px; overflow: scroll;">
+      <div class="card-header">
+        Versioni precedenti
+      </div>
+      <ul class="list-group list-group-flush"></ul>
+      <li class="list-group-item">
+        {{versione.revision.comment}} -  Utente: <strong>{{versione.revision.user}} | Data: {{versione.revision.date_created}}</strong> 
+      </li>
+      <hr>
+    </ul>
+    </div>
+  </div>
+<div class="row">
+      <div class="col">
+        <div class="card border-success mb-3 mx-auto">
+            <img src="/media/{{ricetta.immagine}}" class="card-img rounded-bottom align-middle mx-auto m-1 border-0 opacity-90" style="border: 1px solid green; width: 550px; height: 350px;">
+          <div class="card-body">
+            <h5 class="card-title">{{ricetta.nome}}</h5>
+            <p class="card-text"><strong>Portata: {{ricetta.portata}} - Dosi per {{ricetta.persone}} persone</strong></p>
+            <p class="card-text"><small>Pronto in {{ricetta.prontoin}} minuti. <strong>Punteggio salute: {{ricetta.punteggiosalute}}</strong></small></p>
+            <hr><h5>Ingredienti:</h5></p>
+            <ul class="list-group list-group-flush">
+              {% for ingrediente in ingredienti %}
+              <div class="row">
+                <li style="list-style-type: none">
+              <input type="text" class="form-control" value="{{ingrediente.quantità}}" readonly><input type="text" class="form-control" value="{{ingrediente.ingrediente}}" readonly>
+                </li>
+              </div>
+              <br>
+              {% endfor %}
+            </ul>
+            <div class="row">
+            <strong>Steps:</strong>
+            <textarea class="form-control mx-auto" rows="5" style="width: 100%;" readonly>{{ricetta.procedimento}}</textarea>
+            </div>
+            <div class="row">
+            <strong>Tipi dieta:</strong>
+            <input type="text" class="form-control" value="{{ricetta.tipidieta}}" readonly>
+          </div>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Servings: {{ricetta.persone}} - Time: {{ricetta.prontoin}} m - Health Score: {{ricetta.punteggiosalute}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}
