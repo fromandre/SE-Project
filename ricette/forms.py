@@ -22,6 +22,7 @@ class FormRicetta(forms.Form):
     punteggiosalute = forms.IntegerField(min_value=0, max_value=100)
     tipidieta = forms.CharField()
     
+    
 class NumeroCampi(forms.Form):
     campi = forms.IntegerField(max_value=30, label="Ingredienti")
     
@@ -43,7 +44,6 @@ class FormEdit(ModelForm):
     class Meta:
         model = ricetta
         fields = ["nome", "portata", "procedimento", "punteggiosalute", "tipidieta"]
-
 
 class FormCheckIngr(forms.Form):
     def __init__(self, *args, **kwargs):

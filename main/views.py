@@ -146,7 +146,7 @@ def puliscispesa(request):
 
 def scaricaricette(request):
     listaid = []
-    primoget = "https://api.spoonacular.com/recipes/complexSearch?apiKey=395b53bbc5d446d9a7b43eb82f739384&number=1"
+    primoget = "https://api.spoonacular.com/recipes/complexSearch?apiKey=395b53bbc5d446d9a7b43eb82f739384&number=100&offset=136"
     ric = requests.get(primoget).json()
     for element in ric['results']:
         listaid.append(element['id'])
@@ -160,7 +160,10 @@ def scaricaricette(request):
                 nome = "Non disponibile"
             prontoin = ricettatmp['readyInMinutes']
             persone = ricettatmp['servings']
-            img_data = requests.get(ricettatmp['image']).content
+            if requests.get(ricettatmp['image']).content:
+                img_data = requests.get(ricettatmp['image']).content
+            else:
+                img_data = "Non disponibile"
             path = "public/static/img/" + str(ricettatmp['id']) + ".jpg"
             file = open(path, 'wb')
             file.write(img_data)

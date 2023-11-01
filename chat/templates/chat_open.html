@@ -27,7 +27,7 @@
                       </div>
                         <script>
                             function isOpen(ws) { return ws.readyState === ws.OPEN }
-                            base_url = 'ws://' + window.location.hostname + ':' + window.location.port + '/ws/open_chat/' + "{{ uuid }}" + '/';
+                            base_url = 'ws://' + window.location.hostname + ':' + window.location.port + '/ws/open_chat/' + "{{uuid}}" + '/';
                             chatSocket = new WebSocket(base_url)
                             chatSocket.onmessage = function(event){
                                 let parsed = JSON.parse(event.data);
